@@ -57,7 +57,12 @@ void merge(int arr[], int left, int mid, int right)
     int leftSize = mid - left + 1;
     int rightSize = right - mid;
 
-    int tempLeftArray[leftSize], tempRightArray[rightSize];
+    int *tempLeftArray = (int *)malloc(leftSize * sizeof(int));
+    int *tempRightArray = (int *)malloc(rightSize * sizeof(int));
+    if(tempLeftArray == NULL || tempRightArray == NULL){
+        printf("Memory not allocated!");
+        exit(1);
+    }
 
     for(int i = 0; i < leftSize; i++)
         tempLeftArray[i] = arr[left + i];
@@ -82,4 +87,7 @@ void merge(int arr[], int left, int mid, int right)
 
     while(j < rightSize)
         arr[k++] = tempRightArray[j++];
+
+    free(tempLeftArray);
+    free(tempRightArray);
 }
