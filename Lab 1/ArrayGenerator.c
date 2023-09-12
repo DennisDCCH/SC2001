@@ -1,22 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-int randomInt(int max)
+int maxNumber = 10;
+
+int randomInt()
 {
-    return rand() % max + 1;
+    return rand() % maxNumber + 1;
 }
 
-int* generateArray(int seed, int max, int size)
+int* generateArray(int size)
 {
     //seed
-    srand(seed);
+    srand(time(NULL));
 
     int* array = (int *)malloc(size * sizeof(int));
     if(array == NULL)
         printf("Memory not allocated!");
     else{
         for(int i = 0; i < size; i++)
-            array[i] = randomInt(max);
+            array[i] = randomInt();
     }
 
     return array;
@@ -26,7 +29,7 @@ int main()
 {
     int* arr;
 
-    arr = generateArray(6, 10, 10);
+    arr = generateArray(10);
 
     for(int i = 0; i < 10; i++)
         printf("%d ", arr[i]);

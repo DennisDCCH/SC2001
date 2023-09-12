@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 int threshold = 5;
+int keyComparison = 0;
 
 int main()
 {
@@ -12,6 +13,8 @@ int main()
 
     for(int i = 0; i <= mostRightIndex; i++)
         printf("%d ", arr[i]);
+
+    printf("\n%d", keyComparison);
 }
 
 void hybridSort(int arr[], int left, int right)
@@ -38,6 +41,7 @@ void insertionSort(int arr[], int left, int right)
     for(int i = 0; i < size; i++){
         item = arr[i + left];
         for(int j = i; j > 0; j--){
+            keyComparison++;
             if(arr[j + left] < arr[j - 1 + left]){
                 arr[j + left] = arr[j - 1 + left];
                 arr[j - 1 + left] = item;
@@ -66,6 +70,7 @@ void merge(int arr[], int left, int mid, int right)
     int k = left;
 
     while(i < leftSize && j < rightSize){
+        keyComparison++;
         if(tempLeftArray[i] <= tempRightArray[j])
             arr[k++] = tempLeftArray[i++];
         else
@@ -77,5 +82,4 @@ void merge(int arr[], int left, int mid, int right)
 
     while(j < rightSize)
         arr[k++] = tempRightArray[j++];
-
 }
