@@ -11,31 +11,64 @@ void insertionSort(int arr[], int left, int right);
 void merge(int arr[], int left, int mid, int right);
 int randomInt();
 int* generateArray(int size);
-
+int* duplicateArray(int* originalArray, int arrSize);
 
 int main()
 {
-    int arrSize[] = {1000, 2000, 4000, 8000, 10000, 16000, 32000, 64000, 100000, 128000, 256000, 512000, 1000000, 1024000, 2048000, 4096000, 8192000, 10000000};
+    srand(time(NULL));
+
+    int arrSize[] = {1000, 2500, 5000, 7500, 10000, 25000, 50000, 75000, 1000000, 2500000, 5000000, 7500000, 10000000};
     int temp1 = sizeof(arrSize) / sizeof(int);
-    int threshold[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+
+    int threshold[] = {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
     int temp2 = sizeof(threshold) / sizeof(int);
-    int* arr;
+
+    int* arr, *tempArr;
     int arraySize;
+    int results[13][5][19];
 
     FILE * fpointer = fopen("results_c2_1.csv", "w");
-    fprintf(fpointer, "Array Size,Threshold[S],Key Comparison\n");
+    fprintf(fpointer, "Array Size[N],Threshold[S],Key Comparison 1, Key Comparison 2, Key Comparison 3, Key Comparison 4, Key Comparison 5\n");
 
+    //For different Array Size
     for(int i = 0; i < temp1; i++){
-        for(int j = 0; j < temp2; j++){
-            arraySize = arrSize[i];
+        arraySize = arrSize[i];
+        fprintf(fpointer, "%d", arraySize);
+
+        //Do experiment 5 times, calculate average afterwards
+        for(int j = 0; j < 5; j++){
+
+            //Make new array every new experiment
             arr = generateArray(arraySize);
-            hybridSort(arr, 0, arraySize - 1, threshold[j]);
-            printf("Array Size: %d\nThreshold: %d\nKey Comparison: %d\n\n", arraySize, threshold[j], keyComparison);
-            fprintf(fpointer, "%d,%d,%d\n", arraySize, threshold[j], keyComparison);
-            keyComparison = 0;
+
+            //For different threshold level
+            for(int k = 0; k < temp2; k++){
+
+                //Reset key comparison
+                keyComparison = 0;
+
+                //Duplicate Array for each threshold
+                tempArr = duplicateArray(arr, arraySize);
+
+                //Do merge insertion sort
+                hybridSort(tempArr, 0, arraySize -  1, threshold[k]);
+
+                //Store results
+                results[i][j][k] = keyComparison;
+
+                free(tempArr);
+            }
+            printf("%d, %d experiment\n", arraySize, j);
             free(arr);
         }
     }
+
+    //Write to csv file
+    for(int i = 0; i < temp1; i++){
+        for(int j = 0; j < temp2; j++)
+            fprintf(fpointer, "%d,%d,%d,%d,%d,%d,%d\n", arrSize[i], threshold[j], results[i][0][j], results[i][1][j], results[i][2][j], results[i][3][j], results[i][4][j]);
+    }
+
 
     fclose(fpointer);
 
@@ -64,7 +97,7 @@ void insertionSort(int arr[], int left, int right)
     int item;
     int size = right - left + 1;
 
-    for(int i = 0; i < size; i++){
+    for(int i = 1; i < size; i++){
         item = arr[i + left];
         for(int j = i; j > 0; j--){
             keyComparison++;
@@ -126,9 +159,6 @@ int randomInt()
 
 int* generateArray(int size)
 {
-    //seed
-    srand(time(NULL));
-
     int* array = (int *)malloc(size * sizeof(int));
     if(array == NULL){
         printf("Memory not allocated!");
@@ -140,4 +170,19 @@ int* generateArray(int size)
     }
 
     return array;
+}
+
+int* duplicateArray(int* originalArray, int arrSize)
+{
+    int* duplicateArray = (int *)malloc(arrSize * sizeof(int));
+
+    if(duplicateArray == NULL){
+        printf("Memory allocation failed");
+        return NULL;
+    }
+
+    for(int i = 0; i < arrSize; i++)
+        duplicateArray[i] = originalArray[i];
+
+    return duplicateArray;
 }

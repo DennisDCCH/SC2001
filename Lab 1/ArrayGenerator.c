@@ -11,9 +11,6 @@ int randomInt()
 
 int* generateArray(int size)
 {
-    //seed
-    srand(time(NULL));
-
     int* array = (int *)malloc(size * sizeof(int));
     if(array == NULL)
         printf("Memory not allocated!");
@@ -27,10 +24,21 @@ int* generateArray(int size)
 
 int main()
 {
+    srand(time(NULL));
     int* arr;
 
-    arr = generateArray(10);
+    for(int j = 0; j < 2; j++){
+        arr = generateArray(10);
 
-    for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 10; i++)
+            printf("%d ", arr[i]);
+
+        printf("\n");
+        free(arr);
+
+        for(int i = 0; i < 10; i++)
         printf("%d ", arr[i]);
+
+        printf("\n");
+    }
 }
