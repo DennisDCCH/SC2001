@@ -2,12 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-int threshold = 10;
 int keyComparison = 0;
 int maxNumber = 1000;
 int trial = 1;
 
-void hybridSort(int arr[], int left, int right);
+void hybridSort(int arr[], int left, int right, int threshold);
 void insertionSort(int arr[], int left, int right);
 void merge(int arr[], int left, int mid, int right);
 int randomInt();
@@ -17,40 +16,41 @@ int* generateArray(int size);
 int main()
 {
     int arrSize[] = {1000, 2000, 4000, 8000, 10000, 16000, 32000, 64000, 100000, 128000, 256000, 512000, 1000000, 1024000, 2048000, 4096000, 8192000, 10000000};
-    int temp = sizeof(arrSize) / sizeof(int);
+    int temp1 = sizeof(arrSize) / sizeof(int);
+    int threshold[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+    int temp2 = sizeof(threshold) / sizeof(int);
     int* arr;
     int arraySize;
 
-//    for(int j = 0; j < temp; j++){
-//        arraySize = arrSize[j];
-//        arr = generateArray(arraySize);
-//        hybridSort(arr, 0, arraySize - 1);
-//        printf("Array Size: %d\nKey Comparison: %d\n\n", arraySize, keyComparison);
-//        keyComparison = 0;
-//        free(arr);
-//    }
+    FILE * fpointer = fopen("results_c2_1.csv", "w");
+    fprintf(fpointer, "Array Size,Threshold[S],Key Comparison\n");
 
-    for(int i = 0; i < 100; i++){
-        arraySize = 10;
-        arr = generateArray(arraySize);
-        for(int j = 0; j < 10; j++)
-            printf("%d ", arr[j]);
-        printf("\n");
-        free(arr);
+    for(int i = 0; i < temp1; i++){
+        for(int j = 0; j < temp2; j++){
+            arraySize = arrSize[i];
+            arr = generateArray(arraySize);
+            hybridSort(arr, 0, arraySize - 1, threshold[j]);
+            printf("Array Size: %d\nThreshold: %d\nKey Comparison: %d\n\n", arraySize, threshold[j], keyComparison);
+            fprintf(fpointer, "%d,%d,%d\n", arraySize, threshold[j], keyComparison);
+            keyComparison = 0;
+            free(arr);
+        }
     }
+
+    fclose(fpointer);
 
     return 0;
 }
 
 //Merge insertion Sort Algorithm
-void hybridSort(int arr[], int left, int right)
+void hybridSort(int arr[], int left, int right, int threshold)
 {
     if(right - left > threshold){
         int mid  = (left + right) / 2;
 
         //recursive
-        hybridSort(arr, left, mid);
-        hybridSort(arr, mid + 1, right);
+        hybridSort(arr, left, mid, threshold);
+        hybridSort(arr, mid + 1, right, threshold);
 
         //combine the 2 sub arrays
         merge(arr, left, mid, right);
