@@ -1,0 +1,3 @@
+Array Size[N],Threshold[S],Key Comparison 1, Key Comparison 2, Key Comparison 3, Key Comparison 4, Key Comparison 5,Average Key Comparison
+10000000,Traditional Merge,220047397,220050373,220051179,220047999,220047987,220048987
+10000000,22,242219761,242234831,242208135,242214915,242215166,242218561
