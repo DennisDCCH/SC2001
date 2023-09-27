@@ -2,9 +2,14 @@
 #include <stdlib.h>
 
 #define VERTICES 5
-#define MAX_WEIGHT 50
+#define MAX_WEIGHT 10
 
-enum GraphType {ADJ_MATRIX, ADJ_LIST}; // Types of Graph Representation
+// Types of Graph Representation
+enum GraphType
+{
+    ADJ_MATRIX,
+    ADJ_LIST
+};
 
 typedef struct _listnode
 {
@@ -42,9 +47,11 @@ int main()
     return 0;
 }
 
-Graph generateAdjMatrix(int vertices) {
+Graph generateAdjMatrix(int vertices)
+{
     Graph g;
     g.V = vertices;
+    g.E = 0;
 
     //Initialize adjacency matrix
     g.adj.matrix = (int**)malloc(vertices * sizeof(int*));
@@ -57,8 +64,10 @@ Graph generateAdjMatrix(int vertices) {
         for (int j = 0; j < vertices; j++) {
             if (i == j)
                 g.adj.matrix[i][j] = 0;
-            else
+            else{
                 g.adj.matrix[i][j] = rand() % (MAX_WEIGHT + 1);
+                g.E++;
+            }
         }
     }
 
