@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_VERTICES 10000
+#define MAX_VERTICES 5000
 #define MAX_WEIGHT 10
 
 union GraphForm{
@@ -28,13 +28,29 @@ int main()
     double results[5];
     double sum, average;
 
-    /*
+
     //generating only 1 graph and checking the correctness of implementation
-    g = generateAdjMatrix(10);
+    int matrix2d[5][5] = {
+        {0, 4, 7, 6, 7},
+        {9, 0, 2, 3, 0},
+        {8, 6, 0, 8, 8},
+        {3, 1, 0, 0, 1},
+        {0, 2, 1, 2, 0}
+    };
+
+    g.V = 5; // Set the number of vertices
+    g.adj.matrix = malloc(5 * sizeof(int *));
+    for (int i = 0; i < 5; i++) {
+        g.adj.matrix[i] = malloc(5 * sizeof(int));
+        for (int j = 0; j < 5; j++) {
+            g.adj.matrix[i][j] = matrix2d[i][j];
+        }
+    }
     printGraphMatrix(g);
     dijkstra(&g, 1);
-    */
 
+
+    /*
     //Generating empirical results for analysis
     FILE * fpointer = fopen("lab2_result_1.csv", "a");
     fprintf(fpointer, "Vertices (V), Time 1, Time 2, Time 3, Time 4, Time 5, Average Time\n");
@@ -67,6 +83,7 @@ int main()
     }
 
     fclose(fpointer);
+    */
 
 }
 
